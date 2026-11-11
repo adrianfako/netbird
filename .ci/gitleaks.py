@@ -114,9 +114,16 @@ def scan(root):
         except Exception:
             raise ScanError('Scanner findings report is invalid') from None
         try:
-            baseline = json.loads((root / '.ci/upstream-fixtures.json').read_text())['files']
-            if not isinstance(baseline, dict):
+            entries = json.loads((root / '.ci/upstream-fixtures.json').read_text())['files']
+            if not isinstance(entries, list):
                 raise ValueError('invalid fixture baseline')
+            baseline = {}
+            for entry in entries:
+                filename, digest = entry['path'], entry['sha256']
+                if (not isinstance(filename, str) or filename in baseline or
+                        not isinstance(digest, str) or not re.fullmatch(r'[0-9a-f]{64}', digest)):
+                    raise ValueError('invalid fixture entry')
+                baseline[filename] = digest
             unknown = [row for row in rows if not reviewed_fixture(root, row['file'], baseline)]
         except Exception:
             raise ScanError('Upstream fixture baseline verification failed') from None

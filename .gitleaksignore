@@ -113,3 +113,6 @@ ed4f90b6aa7193e9da99f6d05d89da531bb16e76:management/server/testdata/store_with_e
 ed4f90b6aa7193e9da99f6d05d89da531bb16e76:management/server/testdata/store_with_expired_peers.json:generic-api-key:87
 ef47385e38b5977461a77ed22712d0a7d40cb67b:client/cmd/up_daemon_test.go:generic-api-key:53
 f53155562f0c87d163423a5ee012a8bff8711739:management/server/types/proxy_access_token_test.go:generic-api-key:25
+# Reviewed SHA-256 fixture metadata, not credential values.
+a3c3d21950e8a4728955b3334dbfee7192e00f20:.ci/upstream-fixtures.json:generic-api-key:19
+a3c3d21950e8a4728955b3334dbfee7192e00f20:.ci/upstream-fixtures.json:generic-api-key:28
