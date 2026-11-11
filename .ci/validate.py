@@ -75,9 +75,10 @@ def foundation(root):
             if path.suffix == '.py':
                 ast.parse(content, filename=str(path.relative_to(root)))
             elif path.suffix == '.json':
-                if path.parent.name == '.vscode' and path.name in {
-                        'settings.json', 'tasks.json', 'launch.json', 'extensions.json'}:
-                    # VS Code configuration is JSON with comments and trailing
+                if (path.name == 'tsconfig.json' or
+                        path.parent.name == '.vscode' and path.name in {
+                            'settings.json', 'tasks.json', 'launch.json', 'extensions.json'}):
+                    # TypeScript and VS Code use JSON with comments and trailing
                     # commas. Preserve strings during both normalization passes.
                     quoted = r'"(?:\\.|[^"\\])*"'
                     text = content.decode('utf8')

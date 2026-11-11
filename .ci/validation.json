@@ -1,13 +1,16 @@
 {
   "version": 1,
-  "profile": "docs",
-  "adapter_status": "foundation-only",
-  "checks": [],
+  "profile": "mixed",
+  "adapter_status": "configured",
+  "checks": [
+    {"name": "validation-regressions", "argv": ["python3", ".ci/test_validate.py"], "timeout": 60},
+    {"name": "signal-peer-tests", "argv": ["go", "test", "-tags", "devcert", "./signal/peer"], "timeout": 900}
+  ],
   "setup": [],
   "requires_uv": false,
   "notes": [
     "Foundation syntax checks are not behavioral tests. Security scanning is a separate workflow job.",
-    "No application suite declared for this document/data profile; only foundational checks run."
+    "Focused upstream Signal peer tests only; regional failover and broader application behavior remain unverified."
   ],
   "default_branch": "main"
 }
