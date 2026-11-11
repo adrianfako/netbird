@@ -3,8 +3,33 @@
   "profile": "mixed",
   "adapter_status": "configured",
   "checks": [
-    {"name": "validation-regressions", "argv": ["python3", ".ci/test_validate.py"], "timeout": 60},
-    {"name": "signal-peer-tests", "argv": ["go", "test", "-tags", "devcert", "./signal/peer"], "timeout": 900}
+    {
+      "name": "validation-regressions",
+      "argv": [
+        "python3",
+        ".ci/test_validate.py"
+      ],
+      "timeout": 60
+    },
+    {
+      "name": "signal-peer-tests",
+      "argv": [
+        "go",
+        "test",
+        "-tags",
+        "devcert",
+        "./signal/peer"
+      ],
+      "timeout": 900
+    },
+    {
+      "name": "lab-failure-reporting",
+      "argv": [
+        "python3",
+        "tests/regional-failover/test_run.py"
+      ],
+      "timeout": 60
+    }
   ],
   "setup": [],
   "requires_uv": false,

@@ -34,3 +34,11 @@ existing persisted peer identities survive container restarts.
 No regional subnets are advertised. Lab policy permits only lab-group members.
 Keep regional pilot enrollments limited to the three new VMs until traffic
 verification and later failover work pass.
+
+Pinned server 0.82.1 reports `/health` as HTTP 503 with `listeners: null`
+in combined mode, despite working API, Signal and relay WebSocket checks.
+Its health checker requires a separate relay listener, while combined mode
+multiplexes relay on the management listener. Do not use this endpoint alone
+for promotion or claim healthy controller HA from dashboard HTTP 200. Use
+actual authenticated API and peer-traffic probes; fix and verify this upstream
+health mismatch before automatic failover work.
