@@ -12,6 +12,7 @@ import urllib.request
 from bootstrap import API
 
 ROOT = Path(__file__).resolve().parent
+RESULTS = Path('/mnt/data/netbird/lab/results.json')
 
 
 def compose(*args, timeout=150):
@@ -54,6 +55,8 @@ def main():
     if not args.run:
         print('Pass --run on dedicated lab VM; .env must contain scoped lab credentials')
         return
+    RESULTS.parent.mkdir(parents=True, exist_ok=True)
+    RESULTS.write_text(json.dumps([{'test': 'execution', 'passed': False, 'error': 'incomplete'}])+'\n')
     values = dict(line.split('=', 1) for line in (ROOT/'.env').read_text().splitlines()
                   if line and not line.startswith('#') and '=' in line)
     api = API(values['NETBIRD_URL'], values['NETBIRD_LAB_PAT'])
@@ -116,12 +119,10 @@ def main():
             assert api.call('GET', '/routes') == []
             assert api.call('GET', '/networks') == []
         check('no regional subnet advertisements', no_routes)
-    except (RuntimeError, AssertionError, KeyError, urllib.error.URLError) as error:
+    except (RuntimeError, AssertionError, KeyError, urllib.error.URLError, subprocess.TimeoutExpired) as error:
         results.append({'test': 'execution', 'passed': False, 'error': type(error).__name__})
         print('FAIL', type(error).__name__, flush=True)
-    output = Path('/mnt/data/netbird/lab/results.json')
-    output.parent.mkdir(parents=True, exist_ok=True)
-    output.write_text(json.dumps(results, indent=2)+'\n')
+    RESULTS.write_text(json.dumps(results, indent=2)+'\n')
     print(f'{sum(r["passed"] for r in results)}/{len(results)} checks passed', flush=True)
     raise SystemExit(0 if results and all(r['passed'] for r in results) else 1)
 
