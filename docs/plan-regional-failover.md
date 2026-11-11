@@ -8,8 +8,15 @@ timestamp: "2026-11-11"
 
 # Regional failover implementation plan
 
-**Goal:** Prove community controller failover, then deploy to owned eu-2, eu-6
-and homelab infrastructure without replacing the recovery network.
+**Goal:** Start dedicated lab VMs and a dashboard in owned eu-2, eu-6 and
+homelab, prove isolated peer traffic, then develop community controller failover.
+Preserve the existing recovery network.
+
+**Operator sequencing, 2026-11-11:** Provision the three VMs first, with one
+active eu-6 controller. Dashboard replicas are clients of that controller and
+do not provide controller HA. Connect only these new hosts over existing
+WireGuard; do not advertise regional subnets or enroll existing workloads.
+Public ingress, production enrollment and automatic failover remain later work.
 
 **Spec:** [Regional failover](regional-failover.md).
 
@@ -29,15 +36,15 @@ both Dockhand and the NetBird overlay are down.
 
 ## 1. Establish source and deployment baseline
 
-- [ ] Preserve upstream history in `CODE/fleet/netbird`, with `upstream` remote
+- [x] Preserve upstream history in `CODE/fleet/netbird`, with `upstream` remote
   and operator remotes on Gitea/GitHub. Disable GitHub Actions before first push;
   preserve inherited workflows as upstream content, execute fleet CI on Gitea.
-- [ ] Record exact upstream commit and choose a stable release for the lab.
+- [x] Record exact upstream commit and choose a stable release for the lab.
   Verify release source and server/dashboard image compatibility and digests.
 - [ ] Trace Management persistent state and in-memory update channels, Signal
   peer registry, database migration startup, encryption/session keys and public
   endpoint configuration. Record only consequential blockers under `/docs`.
-- [ ] Inspect regional VM capacity, public IP/port use, DNS capabilities,
+- [x] Inspect regional VM capacity, public IP/port use, DNS capabilities,
   Keycloak availability and independent coordination paths before assigning
   addresses. No guessed VM IDs, free public ports or DNS failover capability.
 
@@ -63,14 +70,14 @@ both Dockhand and the NetBird overlay are down.
   Agents VM workflow if needed. Lab firewall mutations stay inside disposable
   environments; Agents/Kali must not administer fleet firewalls.
 
-## 3. Provision production hosts after lab passes
+## 3. Provision dedicated lab hosts before traffic tests
 
-- [ ] Infrastructure: allocate three VMs in region `vms.yaml`, DNS and declared
+- [x] Infrastructure: allocate three VMs in region `vms.yaml`, DNS and declared
   flows. Run host index with no gaps and region checks. Use existing provisioning
   procedures and Ansible; do not manually write generated inventory.
 - [ ] Ansible: apply OS/Docker baseline and proven host fencing. Confirm SSH
   recovery independently from NetBird on each host.
-- [ ] Depot: add `lighthouse/netbird/compose.yml` and three host manifests.
+- [x] Depot: add `lighthouse/netbird/compose.yml` and three host manifests.
   Pin images by digest, render per-host artifacts, use existing SOPS service-env
   convention and enroll Hawser/Alloy through existing tools.
 - [ ] Set up regional HTTPS ingress and health-checked public endpoint using
