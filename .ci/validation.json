@@ -1,0 +1,13 @@
+{
+  "version": 1,
+  "profile": "docs",
+  "adapter_status": "foundation-only",
+  "checks": [],
+  "setup": [],
+  "requires_uv": false,
+  "notes": [
+    "Foundation syntax checks are not behavioral tests. Security scanning is a separate workflow job.",
+    "No application suite declared for this document/data profile; only foundational checks run."
+  ],
+  "default_branch": "main"
+}
