@@ -28,10 +28,10 @@ path**, so they are routed by path before the model/vendor table is consulted:
 | `bedrock_api` | `IsBedrockPathStyle` → `ProviderRoute.Bedrock` | `/model/{modelId}/{action}` (optionally behind `/bedrock`) |
 
 The catalog declares the style with
-[`catalog.IsVertexPathStyle` / `catalog.IsBedrockPathStyle`](../../../management/server/agentnetwork/catalog/catalog.go)
+[`catalog.IsVertexPathStyle` / `catalog.IsBedrockPathStyle`](../../../management/internals/modules/agentnetwork/catalog/catalog.go)
 and the synthesiser copies the result onto the router route as the `Vertex` /
 `Bedrock` booleans
-([synthesizer.go:450-451](../../../management/server/agentnetwork/synthesizer.go)).
+([synthesizer.go:450-451](../../../management/internals/modules/agentnetwork/synthesizer.go)).
 On the request leg `llm_router.Invoke` dispatches `isVertexPath` / `isBedrockPath`
 **before** the model lookup
 ([llm_router/middleware.go:138-216](../../../proxy/internal/middleware/builtin/llm_router/middleware.go))
@@ -49,7 +49,7 @@ parser picks the parser from the URL **publisher** segment, not from
 lists the Claude-on-Vertex lineup (`claude-opus-4-*`, `claude-sonnet-4-*`,
 `claude-haiku-4-5`, `claude-fable-5`) at the same per-token rates as the
 first-party Anthropic entry
-([catalog.go:333-363](../../../management/server/agentnetwork/catalog/catalog.go)).
+([catalog.go:333-363](../../../management/internals/modules/agentnetwork/catalog/catalog.go)).
 
 ### Credential — service-account OAuth (`keyfile::`)
 
@@ -61,7 +61,7 @@ keyfile::<base64 of the GCP service-account JSON key>
 ```
 
 The synthesiser recognises the `keyfile::` prefix in `providerAuthHeader`
-([synthesizer.go:897-903](../../../management/server/agentnetwork/synthesizer.go)),
+([synthesizer.go:897-903](../../../management/internals/modules/agentnetwork/synthesizer.go)),
 emits **no** static auth value, and carries the base64 key material on the
 route as `GCPServiceAccountKeyB64`
 ([factory.go:56-61](../../../proxy/internal/middleware/builtin/llm_router/factory.go)).
@@ -115,7 +115,7 @@ is omitted from the catalog.
 `KindProvider`, upstream host `bedrock-runtime.<region>.amazonaws.com`. Metered
 models are the Anthropic-on-Bedrock lineup (`anthropic.claude-*`) plus Amazon
 Nova and Llama 3.3 entries
-([catalog.go:300-332](../../../management/server/agentnetwork/catalog/catalog.go)).
+([catalog.go:300-332](../../../management/internals/modules/agentnetwork/catalog/catalog.go)).
 Anthropic-on-Bedrock reuses the first-party Claude prices (with additive cache
 buckets); Nova / Llama report no cache, so cost is `input + output`.
 
@@ -124,7 +124,7 @@ buckets); Nova / Llama report no cache, so cost is `input + output`.
 Bedrock uses the **AWS Bedrock API key** as a static bearer. The operator sets
 the provider `api_key` directly (no `keyfile::` prefix); the catalog template
 is `Authorization: Bearer ${API_KEY}`
-([catalog.go:306-307](../../../management/server/agentnetwork/catalog/catalog.go)).
+([catalog.go:306-307](../../../management/internals/modules/agentnetwork/catalog/catalog.go)).
 No token minting — the synthesiser substitutes the key into the template and
 the router injects the resulting `Authorization` header after stripping inbound
 vendor auth (including client-supplied AWS SigV4 material: `X-Amz-Date`,

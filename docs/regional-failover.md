@@ -98,6 +98,13 @@ even if all NetBird component tests pass.
 
 ## References
 
+Fork bootstrap secret scanning preserves upstream test material without blanket
+test-directory exclusions. Historical exemptions identify exact upstream commit
+fingerprints; current-file exemptions require the reviewed upstream file's full
+SHA-256 hash in `.ci/upstream-fixtures.json`. Any changed file is scanned without
+that exemption. These entries are public test fixtures and certificates, never
+deployment credentials.
+
 - [Dashboard API and authentication configuration](https://docs.netbird.io/selfhosted/maintenance/configuration-files)
 - [Community external relays](https://docs.netbird.io/selfhosted/maintenance/scaling/set-up-external-relays)
 - [Upstream Enterprise HA boundaries](https://docs.netbird.io/selfhosted/maintenance/scaling/high-availability)

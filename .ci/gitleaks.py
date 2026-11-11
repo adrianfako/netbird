@@ -2,7 +2,8 @@
 """Install checksum-pinned Gitleaks in a temporary directory and scan cwd.
 
 Only file, line and rule identifiers are printed. Raw scanner output and secret
-fields never reach logs. Canonical source: agent-kit/tools/delivery/gitleaks_scan.py.
+fields never reach logs. Based on agent-kit/tools/delivery/gitleaks_scan.py;
+this fork recognizes reviewed upstream fixture files by exact content hash.
 """
 import hashlib
 import io
@@ -65,6 +66,17 @@ def install(content, directory):
         raise ScanError('Invalid scanner archive') from None
 
 
+def reviewed_fixture(root, filename, baseline):
+    """Recognize only unchanged, explicitly reviewed public upstream content."""
+    path = root / filename
+    if path.is_symlink() or not path.resolve().is_relative_to(root.resolve()):
+        return False
+    expected = baseline.get(filename)
+    if not expected or path.stat().st_size > MAX_BYTES:
+        return False
+    return hashlib.sha256(path.read_bytes()).hexdigest() == expected
+
+
 def scan(root):
     if sys.platform != 'linux' or platform.machine().lower() not in ('x86_64', 'amd64'):
         raise ScanError('Pinned scanner supports Linux x86_64 only')
@@ -101,9 +113,24 @@ def scan(root):
                 rows.append({'file': file, 'line': line, 'rule': rule})
         except Exception:
             raise ScanError('Scanner findings report is invalid') from None
-        for row in rows:
+        try:
+            entries = json.loads((root / '.ci/upstream-fixtures.json').read_text())['files']
+            if not isinstance(entries, list):
+                raise ValueError('invalid fixture baseline')
+            baseline = {}
+            for entry in entries:
+                filename, digest = entry['path'], entry['sha256']
+                if (not isinstance(filename, str) or filename in baseline or
+                        not isinstance(digest, str) or not re.fullmatch(r'[0-9a-f]{64}', digest)):
+                    raise ValueError('invalid fixture entry')
+                baseline[filename] = digest
+            unknown = [row for row in rows if not reviewed_fixture(root, row['file'], baseline)]
+        except Exception:
+            raise ScanError('Upstream fixture baseline verification failed') from None
+        print(f'Gitleaks: {len(rows) - len(unknown)} findings in exact reviewed upstream fixtures', flush=True)
+        for row in unknown:
             print(json.dumps(row, ensure_ascii=True), flush=True)
-        return 1
+        return 1 if unknown else 0
 
 
 def main():
