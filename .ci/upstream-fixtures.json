@@ -1,0 +1,33 @@
+{
+  "upstream_commit": "5edc26576d5bea1200c3e92d7afc10c3bf39ac1e",
+  "files": {
+    "client/cmd/up_daemon_test.go": "be44bf2af19f583f5987e621dbe55efecbb167aef3b6b19838a49ad25a76e180",
+    "client/embed/embed_test.go": "9f0bae0fd45183e5773d593957e4f348fa2d5fbc984961a86c1541fb4f12832e",
+    "client/internal/engine_privileged_test.go": "c52feff25dfb020270c5ee1fb162e8994c0fda9a5dafa292baeca20979ddf445",
+    "client/internal/peer/conn_test.go": "bc74d0ad92f8a6ae827422a31c24511de03dc7294d4a549d19f3163f2bcef9d8",
+    "client/internal/updater/reposign/certs/root-pub.pem": "6ae2afbb655f0f7094a8e4b3c87964051084c5e1c9ca0768ed530e88733301a1",
+    "client/internal/updater/reposign/certsdev/root-pub.pem": "d817200b1e3dd9d23e08d224539c8a9d1d1a43b1e62ffc2539100b297dcf71b3",
+    "client/server/login_outcome_test.go": "bb03c83dfebf3737afa8bddbfd426430e9f337b2c6a7921f8dd53734d157d63f",
+    "client/ssh/server/jwt_test.go": "f17542a767071c7ea3f2285d7d8a94b2b1945ad2a17cd34ac8a1d71d15bf2aaa",
+    "client/testdata/management.json": "e37b2b02c640f5563eb770cbe499fda8ea8634e0a3da1b74385077a4e424f525",
+    "management/cmd/management_test.go": "69c95bb6c35522f7236c28df9efa8df3e44dca7deb817eb8002022221eaee232",
+    "management/internals/modules/agentnetwork/synthesizer_log_collection_realstore_test.go": "a94976532cee405242861ff42a7982af9121b3e27da0ce7ce46c55edfe05006e",
+    "management/internals/shared/grpc/components_encoder_test.go": "94811a2800a4abb46b7d84e7234a2dba486cf9118a854ce7288ff47b186a79a5",
+    "management/server/account_test.go": "4ce0f798eed871fed3ff2ea19212d67cbcf7b9d06f59ca98d7938459406281d3",
+    "management/server/agentnetwork_realstack_test.go": "892140716688866a010de80fa7894d8b2470769685a08c56199b72cedb7d580e",
+    "management/server/auth/manager_test.go": "391e41fc06fc689984e19547e7afcd69c8372b32ddd414e51008b6fca8b4ba65",
+    "management/server/auth/test_data/sample_key": "44c625903f4bdacd2e38a1a3589a0e44b508f8e936fc599be363958bb091fb73",
+    "management/server/dns_test.go": "2279dbeba23d01fe4957657a620f3c7d240537be7ef199d67cec8783f1b0b797",
+    "management/server/idp/embedded_test.go": "9d86e88e4918249090d63196213c1be0386b0c4c0c1a374201c96169b7684460",
+    "management/server/management_proto_test.go": "f2510c6f449cdd4208ee061316b29b9abbb80d46a7d299055f7eb2b13dc97a9f",
+    "management/server/management_test.go": "2aaeb8e0ac6ce06ac619578025db666a22f540495d8a13d8ef9723671a33269e",
+    "management/server/nameserver_test.go": "4989e1196ac978bada3f1f24b47306828c9fd0495b49f498d525325d76650183",
+    "management/server/peer_test.go": "663f4312cd363ecc656bfd32023d6f129aa05795f21982890b4357cbc5fcfffa",
+    "management/server/route_test.go": "dfb1cb4850df88d2c6f8e6ee6321275799b5f6441b9e71cb5283de53d44b556c",
+    "management/server/testdata/management.json": "6f0603ab9697b372870ec1d7b378f5219a015e1d61373731010862b054a21f83",
+    "management/server/types/proxy_access_token_test.go": "b2d53f33e4b613da8324754c923047a26f0df78f19a354a5e286ba8e75d40f4b",
+    "proxy/inbound_test.go": "96a18f981a4d9d6472ab9235d40db967a653140dae0ba0f7a61a8d4b140b37e7",
+    "proxy/internal/middleware/builtin/llm_guardrail/redact_test.go": "e6f7b62e93c597e4d3ec610901ed60354eae22c6bb972e64ef70e04a22146f10",
+    "shared/management/client/client_test.go": "1748dfbc16989a25632b4fe1f2d7aa6eac59b93d5132689719f9df153f9c006c"
+  }
+}
